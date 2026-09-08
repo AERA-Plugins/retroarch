@@ -17,6 +17,10 @@ RetroArch's menu input probes valid on a device with no exposed gamepad nodes.
 No copyrighted ROM or BIOS content is included. User content is exposed
 read-only under `/storage` inside the jail.
 
+The AERA video driver also handles RGUI's late first texture submission. This
+prevents RetroArch's dummy startup frame from leaving the recovery viewport
+black while the otherwise idle menu waits for another core frame.
+
 ## Versions and source
 
 - RetroArch v1.22.2, commit `69a4f0ea1e8aaf442ae4858f2e7f2b31a1776576`

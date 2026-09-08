@@ -101,6 +101,12 @@ static bool aera_gfx_frame(void *data, const void *frame,
       const bool menu_alive =
          (video_info->menu_st_flags & MENU_ST_FLAG_ALIVE) != 0;
       menu_driver_frame(menu_alive, video_info);
+      /* RGUI submits its first texture after the dummy 4x4 cached frame.
+       * Publishing that dummy frame makes RetroArch wait for another core
+       * frame that never arrives while the menu is idle. Let the texture
+       * callback publish the initial menu instead. */
+      if (menu_alive && aera->menu_enabled && !aera->menu)
+         return aera_platform_alive();
       if (menu_alive && aera->menu_enabled && aera->menu) {
          selected = aera->menu;
          width = aera->menu_width; height = aera->menu_height;
@@ -159,6 +165,17 @@ static void aera_set_texture_frame(void *data, const void *frame, bool rgb32,
    memcpy(aera->menu, frame, bytes);
    aera->menu_width = width; aera->menu_height = height;
    aera->menu_pitch = pitch; aera->menu_rgb32 = rgb32;
+   /* RGUI can update its software texture without scheduling a second video
+    * frame. Submit it here when the channel is free so the initial menu and
+    * touch-driven redraws are never stranded behind the cached dummy frame. */
+   if (aera->menu_enabled && aera_platform_frame_ready()) {
+      uint32_t *output = aera_platform_next_frame();
+      if (output) {
+         aera_scale(output, aera->menu, aera->menu_width, aera->menu_height,
+                    aera->menu_pitch, aera->menu_rgb32, true);
+         aera_platform_publish_frame();
+      }
+   }
 }
 
 static void aera_set_texture_enable(void *data, bool state, bool fullscreen)
