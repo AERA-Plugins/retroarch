@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "id": "retroarch",
+  "name": "AERA RetroArch",
+  "version": "1.0.0",
+  "description": "Touch-first RetroArch with MaterialUI, speaker audio, isolated content access, and a bundled 2048 test core.",
+  "type": "app-runtime",
+  "entry": "retroarch",
+  "min_host_api": 1,
+  "payload": "runtime.xz",
+  "payload_url": "https://github.com/AERA-Plugins/retroarch/releases/download/v1.0.0/runtime.xz",
+  "payload_size": 2741600,
+  "payload_sha256": "3da546a714c503869ef2779c077abdec7bfdf8d956d13794b6c2704e1e8baf3f",
+  "expanded_size": 6709193,
+  "expanded_sha256": "6fc6dc9ffe6a873aa5a6649d6b7d3dd050d3c3a2f5585693c8f3b3ad71a2cee8",
+  "member_count": 114,
+  "permissions": ["display", "touch-input", "audio-output", "read-only-storage"]
+}
