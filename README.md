@@ -18,8 +18,11 @@ ROM or BIOS content is included. User content is exposed read-only under
 
 - RetroArch v1.22.2, commit `69a4f0ea1e8aaf442ae4858f2e7f2b31a1776576`
 - libretro-2048 commit `39333f7b13dc4daea7c151d9c38d22b961246343`
-- Official `retroarch-assets` MaterialUI assets (CC BY 4.0)
-- Official `common-overlays` RetroPad overlay assets
+- `retroarch-assets` commit `73106363e14e34c08a5854b4cfbc29f184e3b783`
+  MaterialUI assets (CC BY 4.0)
+- `common-overlays` commit `271f0b55c0716c7a18eb960a6b65b9ad6e2ea1cb`
+  RetroPad overlay assets
+- `libretro-core-info` commit `7e6b39632e6041e406794a22fd952e205c87e049`
 
 RetroArch and the AERA driver adaptation are GPLv3-or-later. The 2048 core is
 public domain. Third-party asset licensing remains described by the upstream
@@ -28,7 +31,9 @@ repositories.
 ## Build
 
 `source/build-runtime.sh` pins the source commits, applies the AERA drivers,
-builds an ARM64 musl runtime, and stages the selected assets. Then run:
+builds an ARM64 musl runtime, and stages the selected assets. It expects the
+cross compiler wrappers in `AERA_CC`/`AERA_CXX` and LLVM strip in
+`AERA_STRIP`. Then run:
 
 ```sh
 python3 source/pack.py STAGED_RUNTIME build

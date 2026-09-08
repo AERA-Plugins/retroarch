@@ -2,10 +2,7 @@ diff --git a/Makefile.common b/Makefile.common
 index 57dabf5..8745901 100644
 --- a/Makefile.common
 +++ b/Makefile.common
-@@ -347,6 +347,14 @@ OBJ += \
-        cores/dynamic_dummy.o \
-        $(LIBRETRO_COMM_DIR)/queues/message_queue.o
- 
+@@ -349,0 +350,8 @@ OBJ += \
 +ifeq ($(HAVE_AERA), 1)
 +   DEFINES += -DHAVE_AERA
 +   OBJ += aera/aera_platform.o \
@@ -14,63 +11,45 @@ index 57dabf5..8745901 100644
 +          audio/drivers/aera_audio.o
 +endif
 +
- ifeq ($(HAVE_MENU), 1)
 diff --git a/audio/audio_driver.c b/audio/audio_driver.c
+index a4a28cf..2d442be 100644
 --- a/audio/audio_driver.c
 +++ b/audio/audio_driver.c
-@@ -103,6 +103,9 @@ audio_driver_t audio_null = {
- };
- 
- audio_driver_t *audio_drivers[] = {
+@@ -105,0 +106,3 @@ audio_driver_t *audio_drivers[] = {
 +#ifdef HAVE_AERA
 +   &audio_aera,
 +#endif
 diff --git a/audio/audio_driver.h b/audio/audio_driver.h
+index cd0ca56..6bf5f93 100644
 --- a/audio/audio_driver.h
 +++ b/audio/audio_driver.h
-@@ -427,6 +427,7 @@ extern audio_driver_t audio_switch_libnx_audren;
- extern audio_driver_t audio_switch_libnx_audren_thread;
- extern audio_driver_t audio_rwebaudio;
- extern audio_driver_t audio_audioworklet;
+@@ -429,0 +430 @@ extern audio_driver_t audio_audioworklet;
 +extern audio_driver_t audio_aera;
- 
- audio_driver_state_t *audio_state_get_ptr(void);
 diff --git a/gfx/video_driver.c b/gfx/video_driver.c
+index 7917922..c9f6614 100644
 --- a/gfx/video_driver.c
 +++ b/gfx/video_driver.c
-@@ -342,6 +342,9 @@ video_driver_t video_null = {
- };
- 
- const video_driver_t *video_drivers[] = {
+@@ -344,0 +345,3 @@ const video_driver_t *video_drivers[] = {
 +#ifdef HAVE_AERA
 +   &video_aera,
 +#endif
 diff --git a/gfx/video_driver.h b/gfx/video_driver.h
+index ca6434c..da7fa66 100644
 --- a/gfx/video_driver.h
 +++ b/gfx/video_driver.h
-@@ -1365,6 +1365,7 @@ extern video_driver_t video_vga;
- extern video_driver_t video_fpga;
- extern video_driver_t video_sixel;
- extern video_driver_t video_network;
+@@ -1367,0 +1368 @@ extern video_driver_t video_network;
 +extern video_driver_t video_aera;
- extern video_driver_t video_oga;
 diff --git a/input/input_driver.c b/input/input_driver.c
+index beba85e..b480ceb 100644
 --- a/input/input_driver.c
 +++ b/input/input_driver.c
-@@ -300,6 +300,9 @@ input_device_driver_t *joypad_drivers[] = {
- };
- 
- input_driver_t *input_drivers[] = {
+@@ -302,0 +303,3 @@ input_driver_t *input_drivers[] = {
 +#ifdef HAVE_AERA
 +   &input_aera,
 +#endif
 diff --git a/input/input_driver.h b/input/input_driver.h
+index 3b54a0f..c67c567 100644
 --- a/input/input_driver.h
 +++ b/input/input_driver.h
-@@ -1203,6 +1203,7 @@ extern input_driver_t input_dos;
- extern input_driver_t input_winraw;
- extern input_driver_t input_wayland;
- extern input_driver_t input_test;
+@@ -1205,0 +1206 @@ extern input_driver_t input_test;
 +extern input_driver_t input_aera;
- 
- extern input_device_driver_t dinput_joypad;

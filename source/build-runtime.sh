@@ -8,6 +8,7 @@ overlays_source=${RETROARCH_OVERLAYS_SOURCE:?Set RETROARCH_OVERLAYS_SOURCE}
 sysroot=${AERA_SYSROOT:-/tmp/aera-webkit-sysroot}
 cc=${AERA_CC:?Set AERA_CC to an ARM64 musl compiler wrapper}
 cxx=${AERA_CXX:?Set AERA_CXX to an ARM64 musl C++ compiler wrapper}
+strip=${AERA_STRIP:?Set AERA_STRIP to an LLVM strip binary}
 output=${1:?Pass the staged runtime output directory}
 script_dir=$(cd -- "$(dirname -- "$0")" && pwd)
 
@@ -15,6 +16,10 @@ test "$(git -C "$retroarch_source" rev-parse HEAD)" = \
   69a4f0ea1e8aaf442ae4858f2e7f2b31a1776576
 test "$(git -C "$core_source" rev-parse HEAD)" = \
   39333f7b13dc4daea7c151d9c38d22b961246343
+test "$(git -C "$assets_source" rev-parse HEAD)" = \
+  73106363e14e34c08a5854b4cfbc29f184e3b783
+test "$(git -C "$overlays_source" rev-parse HEAD)" = \
+  271f0b55c0716c7a18eb960a6b65b9ad6e2ea1cb
 
 patch -d "$retroarch_source" -p1 < "$script_dir/retroarch-aera.patch"
 mkdir -p "$retroarch_source/aera" "$retroarch_source/gfx/drivers" \
@@ -62,7 +67,8 @@ mkdir -p "$output/lib" "$output/etc" "$output/usr/bin" \
   "$output/usr/lib/libretro" "$output/usr/share/retroarch/assets/glui" \
   "$output/usr/share/retroarch/info" \
   "$output/usr/share/retroarch/overlays"
-cp "$sysroot/lib/ld-musl-aarch64.so.1" "$output/lib/"
+cp -a "$sysroot/lib/ld-musl-aarch64.so.1" \
+  "$sysroot/lib/libc.musl-aarch64.so.1" "$output/lib/"
 cp retroarch "$output/usr/bin/retroarch"
 cp "$core_source/2048_libretro.so" "$output/usr/lib/libretro/"
 cp "$assets_source/glui/"* "$output/usr/share/retroarch/assets/glui/"
@@ -74,7 +80,6 @@ cp -R "$overlays_source/gamepads/retropad/img" \
   "$output/usr/share/retroarch/overlays/"
 cp "$script_dir/retroarch.cfg" "$output/etc/"
 curl -L --fail --silent --show-error \
-  https://raw.githubusercontent.com/libretro/libretro-core-info/master/2048_libretro.info \
+  https://raw.githubusercontent.com/libretro/libretro-core-info/7e6b39632e6041e406794a22fd952e205c87e049/2048_libretro.info \
   -o "$output/usr/share/retroarch/info/2048_libretro.info"
-llvm-strip --strip-unneeded "$output/usr/bin/retroarch" \
-  "$output/usr/lib/libretro/2048_libretro.so"
+"$strip" --strip-unneeded "$output/usr/bin/retroarch"
