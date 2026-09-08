@@ -9,12 +9,14 @@ channel; touch events cross a bounded packet channel; stereo PCM uses AERA's
 protected device audio bridge. RetroArch never owns the recovery framebuffer or
 raw input devices.
 
-The runtime uses RetroArch's compact RGUI menu backend, phone touch controls,
-and a public-domain 2048 libretro core for installation testing. RGUI avoids
-depending on an OpenGL menu-display backend inside the recovery jail. An AERA
-pointer driver handles touch while an inert AERA joypad driver keeps
+The runtime uses RetroArch's phone-oriented GLUI/MaterialUI menu, phone touch
+controls, Gambatte for Game Boy and Game Boy Color software, and a public-domain
+2048 libretro core for installation testing. AERA supplies a compact software
+menu-display and overlay compositor, so GLUI does not require an OpenGL stack in
+the recovery jail. An AERA pointer driver handles touch while an inert AERA joypad driver keeps
 RetroArch's menu input probes valid on a device with no exposed gamepad nodes.
-No copyrighted ROM or BIOS content is included. User content is exposed
+No copyrighted ROM or BIOS content is included. Game Boy BIOS files are optional.
+User content is exposed
 read-only under `/storage` inside the jail.
 
 The AERA video driver also handles RGUI's late first texture submission. This
@@ -30,15 +32,16 @@ source.
 
 - RetroArch v1.22.2, commit `69a4f0ea1e8aaf442ae4858f2e7f2b31a1776576`
 - libretro-2048 commit `39333f7b13dc4daea7c151d9c38d22b961246343`
+- Gambatte libretro commit `d9d6cd06382d1ced30de34d56d3609452323dab1`
 - `retroarch-assets` commit `73106363e14e34c08a5854b4cfbc29f184e3b783`
   MaterialUI assets (CC BY 4.0)
 - `common-overlays` commit `271f0b55c0716c7a18eb960a6b65b9ad6e2ea1cb`
   RetroPad overlay assets
 - `libretro-core-info` commit `7e6b39632e6041e406794a22fd952e205c87e049`
 
-RetroArch and the AERA driver adaptation are GPLv3-or-later. The 2048 core is
-public domain. Third-party asset licensing remains described by the upstream
-repositories.
+RetroArch and the AERA driver adaptation are GPLv3-or-later. Gambatte is GPLv2,
+and the 2048 core is public domain. Third-party asset licensing remains
+described by the upstream repositories and is included in the staged runtime.
 
 ## Build
 

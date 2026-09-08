@@ -3,6 +3,7 @@ set -euo pipefail
 
 retroarch_source=${RETROARCH_SOURCE:?Set RETROARCH_SOURCE to RetroArch v1.22.2}
 core_source=${CORE_2048_SOURCE:?Set CORE_2048_SOURCE to libretro-2048}
+gambatte_source=${GAMBATTE_SOURCE:?Set GAMBATTE_SOURCE to gambatte-libretro}
 assets_source=${RETROARCH_ASSETS_SOURCE:?Set RETROARCH_ASSETS_SOURCE}
 overlays_source=${RETROARCH_OVERLAYS_SOURCE:?Set RETROARCH_OVERLAYS_SOURCE}
 sysroot=${AERA_SYSROOT:-/tmp/aera-webkit-sysroot}
@@ -16,6 +17,8 @@ test "$(git -C "$retroarch_source" rev-parse HEAD)" = \
   69a4f0ea1e8aaf442ae4858f2e7f2b31a1776576
 test "$(git -C "$core_source" rev-parse HEAD)" = \
   39333f7b13dc4daea7c151d9c38d22b961246343
+test "$(git -C "$gambatte_source" rev-parse HEAD)" = \
+  d9d6cd06382d1ced30de34d56d3609452323dab1
 test "$(git -C "$assets_source" rev-parse HEAD)" = \
   73106363e14e34c08a5854b4cfbc29f184e3b783
 test "$(git -C "$overlays_source" rev-parse HEAD)" = \
@@ -61,25 +64,39 @@ make HAVE_AERA=1 -j"$(nproc)"
 make -C "$core_source" -f Makefile.libretro clean || true
 make -C "$core_source" -f Makefile.libretro platform=unix \
   CC="$cc" CXX="$cxx" -j"$(nproc)"
+make -C "$gambatte_source" -f Makefile.libretro clean || true
+make -C "$gambatte_source" -f Makefile.libretro platform=unix \
+  HAVE_NETWORK=0 CC="$cc" CXX="$cxx" \
+  LDFLAGS="-static-libstdc++ -static-libgcc -Wl,--gc-sections" \
+  -j"$(nproc)"
 
 rm -rf "$output"
 mkdir -p "$output/lib" "$output/etc" "$output/usr/bin" \
   "$output/usr/lib/libretro" "$output/usr/share/retroarch/assets/glui" \
   "$output/usr/share/retroarch/info" \
-  "$output/usr/share/retroarch/overlays"
+  "$output/usr/share/retroarch/overlays" \
+  "$output/usr/share/licenses/gambatte"
 cp -a "$sysroot/lib/ld-musl-aarch64.so.1" \
   "$sysroot/lib/libc.musl-aarch64.so.1" "$output/lib/"
 cp retroarch "$output/usr/bin/retroarch"
 cp "$core_source/2048_libretro.so" "$output/usr/lib/libretro/"
+cp "$gambatte_source/gambatte_libretro.so" "$output/usr/lib/libretro/"
 cp "$assets_source/glui/"* "$output/usr/share/retroarch/assets/glui/"
 cp "$assets_source/pkg/fallback-font.ttf" \
   "$assets_source/pkg/osd-font.ttf" "$output/usr/share/retroarch/assets/"
-cp "$overlays_source/gamepads/retropad/retropad.cfg" \
-  "$output/usr/share/retroarch/overlays/"
-cp -R "$overlays_source/gamepads/retropad/img" \
-  "$output/usr/share/retroarch/overlays/"
+mkdir -p "$output/usr/share/retroarch/overlays/img"
+for image in a.png b.png dpad.png rgui.png select.png start.png; do
+  cp "$overlays_source/gamepads/retropad/img/$image" \
+    "$output/usr/share/retroarch/overlays/img/"
+done
 cp "$script_dir/retroarch.cfg" "$output/etc/"
+cp "$script_dir/gameboy.cfg" "$output/usr/share/retroarch/overlays/"
+cp "$gambatte_source/COPYING" "$output/usr/share/licenses/gambatte/"
 curl -L --fail --silent --show-error \
   https://raw.githubusercontent.com/libretro/libretro-core-info/7e6b39632e6041e406794a22fd952e205c87e049/2048_libretro.info \
   -o "$output/usr/share/retroarch/info/2048_libretro.info"
+curl -L --fail --silent --show-error \
+  https://raw.githubusercontent.com/libretro/libretro-core-info/7e6b39632e6041e406794a22fd952e205c87e049/gambatte_libretro.info \
+  -o "$output/usr/share/retroarch/info/gambatte_libretro.info"
 "$strip" --strip-unneeded "$output/usr/bin/retroarch"
+"$strip" --strip-unneeded "$output/usr/lib/libretro/gambatte_libretro.so"

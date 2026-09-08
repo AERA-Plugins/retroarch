@@ -33,12 +33,63 @@ index 7917922..c9f6614 100644
 +#ifdef HAVE_AERA
 +   &video_aera,
 +#endif
+diff --git a/gfx/font_driver.c b/gfx/font_driver.c
+index c55f9fa..a2b1511 100644
+--- a/gfx/font_driver.c
++++ b/gfx/font_driver.c
+@@ -85,0 +86,14 @@ static bool font_init_first(
++#ifdef HAVE_AERA
++      case FONT_DRIVER_RENDER_AERA:
++         {
++            void *data = aera_font.init(video_data, font_path, font_size,
++                  is_threaded);
++            if (data)
++            {
++               *font_driver = &aera_font;
++               *font_handle = data;
++               return true;
++            }
++         }
++         break;
++#endif
+diff --git a/gfx/font_driver.h b/gfx/font_driver.h
+index ab849b0..99554c0 100644
+--- a/gfx/font_driver.h
++++ b/gfx/font_driver.h
+@@ -159,0 +160 @@ extern font_renderer_t rsx_font;
++extern font_renderer_t aera_font;
+diff --git a/gfx/gfx_display.c b/gfx/gfx_display.c
+index 85a207c..aa28152 100644
+--- a/gfx/gfx_display.c
++++ b/gfx/gfx_display.c
+@@ -50,0 +51,3 @@ static gfx_display_ctx_driver_t *gfx_display_ctx_drivers[] = {
++#ifdef HAVE_AERA
++   &gfx_display_ctx_aera,
++#endif
+diff --git a/gfx/gfx_display.h b/gfx/gfx_display.h
+index 79aac74..ec9c4ea 100644
+--- a/gfx/gfx_display.h
++++ b/gfx/gfx_display.h
+@@ -113 +113,2 @@ enum gfx_display_driver_type
+-   GFX_VIDEO_DRIVER_RSX
++   GFX_VIDEO_DRIVER_RSX,
++   GFX_VIDEO_DRIVER_AERA
+@@ -340,0 +342 @@ extern gfx_display_ctx_driver_t gfx_display_ctx_rsx;
++extern gfx_display_ctx_driver_t gfx_display_ctx_aera;
 diff --git a/gfx/video_driver.h b/gfx/video_driver.h
 index ca6434c..da7fa66 100644
 --- a/gfx/video_driver.h
 +++ b/gfx/video_driver.h
 @@ -1367,0 +1368 @@ extern video_driver_t video_network;
 +extern video_driver_t video_aera;
+diff --git a/gfx/video_defines.h b/gfx/video_defines.h
+index 34ebb43..8c6822e 100644
+--- a/gfx/video_defines.h
++++ b/gfx/video_defines.h
+@@ -150 +150,2 @@ enum font_driver_render_api
+-   FONT_DRIVER_RENDER_RSX
++   FONT_DRIVER_RENDER_RSX,
++   FONT_DRIVER_RENDER_AERA
 diff --git a/input/input_driver.c b/input/input_driver.c
 --- a/input/input_driver.c
 +++ b/input/input_driver.c
