@@ -60,6 +60,7 @@ sed -i 's/^#define HAVE_XKBCOMMON 1/\/\* #undef HAVE_XKBCOMMON \*\//' config.h
 sed -i 's/^#define HAVE_GLSLANG_SPIRV_TOOLS 1/\/\* #undef HAVE_GLSLANG_SPIRV_TOOLS \*\//' config.h
 sed -i 's/^#define HAVE_GLSLANG_SPIRV_TOOLS_OPT 1/\/\* #undef HAVE_GLSLANG_SPIRV_TOOLS_OPT \*\//' config.h
 make HAVE_AERA=1 -j"$(nproc)"
+grep -aq 'glui' retroarch
 
 make -C "$core_source" -f Makefile.libretro clean || true
 make -C "$core_source" -f Makefile.libretro platform=unix \
@@ -90,6 +91,7 @@ for image in a.png b.png dpad.png rgui.png select.png start.png; do
     "$output/usr/share/retroarch/overlays/img/"
 done
 cp "$script_dir/retroarch.cfg" "$output/etc/"
+grep -qx 'menu_driver = "glui"' "$output/etc/retroarch.cfg"
 cp "$script_dir/gameboy.cfg" "$output/usr/share/retroarch/overlays/"
 cp "$gambatte_source/COPYING" "$output/usr/share/licenses/gambatte/"
 curl -L --fail --silent --show-error \

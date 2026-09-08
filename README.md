@@ -19,7 +19,9 @@ No copyrighted ROM or BIOS content is included. Game Boy BIOS files are optional
 User content is exposed
 read-only under `/storage` inside the jail.
 
-The AERA video driver also handles RGUI's late first texture submission. This
+GLUI is both the shipped configuration and the compiled AERA default, so a
+missing or regenerated configuration cannot silently fall back to RGUI. The
+AERA video driver also handles RGUI's late first texture submission. This
 prevents RetroArch's dummy startup frame from leaving the recovery viewport
 black while the otherwise idle menu waits for another core frame.
 

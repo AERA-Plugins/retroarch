@@ -19,6 +19,15 @@ index a4a28cf..2d442be 100644
 +#ifdef HAVE_AERA
 +   &audio_aera,
 +#endif
+diff --git a/configuration.c b/configuration.c
+index 77abe35..a99c1df 100644
+--- a/configuration.c
++++ b/configuration.c
+@@ -762 +762,3 @@ static const enum location_driver_enum LOCATION_DEFAULT_DRIVER = LOCATION_NULL;
+-#if (defined(_3DS) || defined(DINGUX)) && defined(HAVE_RGUI)
++#if defined(HAVE_AERA) && defined(HAVE_MATERIALUI)
++static const enum menu_driver_enum MENU_DEFAULT_DRIVER = MENU_MATERIALUI;
++#elif (defined(_3DS) || defined(DINGUX)) && defined(HAVE_RGUI)
 diff --git a/audio/audio_driver.h b/audio/audio_driver.h
 index cd0ca56..6bf5f93 100644
 --- a/audio/audio_driver.h
