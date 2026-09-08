@@ -35,7 +35,7 @@ CC="$cc" CXX="$cxx" PKG_CONFIG_LIBDIR="$sysroot/usr/lib/pkgconfig" \
   ./configure --host=aarch64-alpine-linux-musl --prefix=/usr \
   --with-assets_dir=/usr/share/retroarch/assets \
   --with-core_info_dir=/usr/share/retroarch/info \
-  --enable-materialui --disable-xmb --disable-ozone --disable-rgui \
+  --enable-materialui --enable-rgui --disable-xmb --disable-ozone \
   --disable-x11 --disable-wayland --disable-sdl --disable-sdl2 \
   --disable-opengl --disable-vulkan --disable-kms --disable-egl \
   --disable-alsa --disable-tinyalsa --disable-oss --disable-pulse \

@@ -1,7 +1,37 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include <libretro.h>
+#include <string.h>
 #include "../input_driver.h"
 #include "../../aera/aera_platform.h"
+
+static void *aera_joypad_init(void *data)
+{ (void)data; return (void *)-1; }
+static bool aera_joypad_query(unsigned pad)
+{ return pad == 0; }
+static void aera_joypad_destroy(void) {}
+static int32_t aera_joypad_button(unsigned pad, uint16_t key)
+{ (void)pad; (void)key; return 0; }
+static int16_t aera_joypad_state(rarch_joypad_info_t *info,
+      const struct retro_keybind *binds, unsigned port)
+{ (void)info; (void)binds; (void)port; return 0; }
+static void aera_joypad_buttons(unsigned pad, input_bits_t *state)
+{ (void)pad; memset(state, 0, sizeof(*state)); }
+static int16_t aera_joypad_axis(unsigned pad, uint32_t axis)
+{ (void)pad; (void)axis; return 0; }
+static void aera_joypad_poll(void)
+{ aera_platform_poll(); }
+static const char *aera_joypad_name(unsigned pad)
+{ return pad == 0 ? "AERA Touch Controller" : NULL; }
+
+/* RetroArch's menu input collector assumes a primary joypad object exists,
+ * even for pointer-only platforms. Supplying this inert device keeps those
+ * analog probes well-defined; actual touch data remains on the pointer API. */
+input_device_driver_t aera_joypad = {
+   aera_joypad_init, aera_joypad_query, aera_joypad_destroy,
+   aera_joypad_button, aera_joypad_state, aera_joypad_buttons,
+   aera_joypad_axis, aera_joypad_poll, NULL, NULL, NULL, NULL,
+   aera_joypad_name, "aera"
+};
 
 static void *aera_input_init(const char *joypad_driver)
 { (void)joypad_driver; return aera_platform_init() ? (void *)-1 : NULL; }

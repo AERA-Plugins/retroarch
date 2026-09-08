@@ -40,16 +40,19 @@ index ca6434c..da7fa66 100644
 @@ -1367,0 +1368 @@ extern video_driver_t video_network;
 +extern video_driver_t video_aera;
 diff --git a/input/input_driver.c b/input/input_driver.c
-index beba85e..b480ceb 100644
 --- a/input/input_driver.c
 +++ b/input/input_driver.c
+@@ -297,0 +298,3 @@ input_device_driver_t *joypad_drivers[] = {
++#ifdef HAVE_AERA
++   &aera_joypad,
++#endif
 @@ -302,0 +303,3 @@ input_driver_t *input_drivers[] = {
 +#ifdef HAVE_AERA
 +   &input_aera,
 +#endif
 diff --git a/input/input_driver.h b/input/input_driver.h
-index 3b54a0f..c67c567 100644
 --- a/input/input_driver.h
 +++ b/input/input_driver.h
-@@ -1205,0 +1206 @@ extern input_driver_t input_test;
+@@ -1205,0 +1206,2 @@ extern input_driver_t input_test;
 +extern input_driver_t input_aera;
++extern input_device_driver_t aera_joypad;

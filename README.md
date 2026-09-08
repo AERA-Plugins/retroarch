@@ -9,10 +9,13 @@ channel; touch events cross a bounded packet channel; stereo PCM uses AERA's
 protected device audio bridge. RetroArch never owns the recovery framebuffer or
 raw input devices.
 
-The runtime uses RetroArch's MaterialUI, official icons, phone touch controls,
-and a public-domain 2048 libretro core for installation testing. No copyrighted
-ROM or BIOS content is included. User content is exposed read-only under
-`/storage` inside the jail.
+The runtime uses RetroArch's compact RGUI menu backend, phone touch controls,
+and a public-domain 2048 libretro core for installation testing. RGUI avoids
+depending on an OpenGL menu-display backend inside the recovery jail. An AERA
+pointer driver handles touch while an inert AERA joypad driver keeps
+RetroArch's menu input probes valid on a device with no exposed gamepad nodes.
+No copyrighted ROM or BIOS content is included. User content is exposed
+read-only under `/storage` inside the jail.
 
 ## Versions and source
 
