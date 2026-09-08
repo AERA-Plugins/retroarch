@@ -25,6 +25,7 @@ test "$(git -C "$overlays_source" rev-parse HEAD)" = \
   271f0b55c0716c7a18eb960a6b65b9ad6e2ea1cb
 
 patch -d "$retroarch_source" -p1 < "$script_dir/retroarch-aera.patch"
+grep -q 'string_is_equal(video_driver, "aera")' "$retroarch_source/configuration.c"
 mkdir -p "$retroarch_source/aera" "$retroarch_source/gfx/drivers" \
   "$retroarch_source/input/drivers" "$retroarch_source/audio/drivers"
 cp "$script_dir/drivers/aera/"* "$retroarch_source/aera/"

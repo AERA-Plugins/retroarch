@@ -28,6 +28,12 @@ index 77abe35..a99c1df 100644
 +#if defined(HAVE_AERA) && defined(HAVE_MATERIALUI)
 +static const enum menu_driver_enum MENU_DEFAULT_DRIVER = MENU_MATERIALUI;
 +#elif (defined(_3DS) || defined(DINGUX)) && defined(HAVE_RGUI)
+@@ -3488,0 +3491,5 @@ static bool check_menu_driver_compatibility(settings_t *settings)
++
++#ifdef HAVE_AERA
++   if (string_is_equal(video_driver, "aera"))
++      return true;
++#endif
 diff --git a/audio/audio_driver.h b/audio/audio_driver.h
 index cd0ca56..6bf5f93 100644
 --- a/audio/audio_driver.h
