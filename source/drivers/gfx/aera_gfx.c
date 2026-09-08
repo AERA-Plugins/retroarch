@@ -27,8 +27,14 @@ static void *aera_gfx_init(const video_info_t *video,
    (void)video;
    if (!aera || !aera_platform_init()) { free(aera); return NULL; }
    aera->rgb32 = video->rgb32;
-   *input = &input_aera;
-   *input_data = (void *)-1;
+   /* Explicitly decline video-coupled input. RetroArch passes its already
+    * selected driver in *input; leaving that pointer untouched makes
+    * video_driver_init_input() assume initialization is complete and skips
+    * input_driver_init_joypads(). Clearing it forces the normal AERA input
+    * init path, which reuses this mapped transport and installs the joypad
+    * shim required by the menu analog scan. */
+   *input = NULL;
+   *input_data = NULL;
    video_driver_set_size(AERA_FRAME_WIDTH, AERA_FRAME_HEIGHT);
    return aera;
 }

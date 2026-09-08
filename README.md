@@ -21,6 +21,11 @@ The AERA video driver also handles RGUI's late first texture submission. This
 prevents RetroArch's dummy startup frame from leaving the recovery viewport
 black while the otherwise idle menu waits for another core frame.
 
+Video setup explicitly declines RetroArch's video-coupled input shortcut so
+the normal AERA input initialization also installs its joypad shim. This keeps
+the menu's unconditional analog scan valid while touch remains the real input
+source.
+
 ## Versions and source
 
 - RetroArch v1.22.2, commit `69a4f0ea1e8aaf442ae4858f2e7f2b31a1776576`
