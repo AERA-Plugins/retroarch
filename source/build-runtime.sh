@@ -52,7 +52,7 @@ CC="$cc" CXX="$cxx" PKG_CONFIG_LIBDIR="$sysroot/usr/lib/pkgconfig" \
   --disable-shaderpipeline --disable-online_updater --disable-update_cores \
   --disable-update_core_info --disable-update_assets --disable-xdelta \
   --disable-parport --disable-test_drivers --disable-crtswitchres \
-  --disable-cdrom --disable-langextra --disable-libretrodb \
+  --disable-cdrom --disable-libretrodb \
   --disable-audiomixer --disable-builtinglslang --enable-builtinzlib
 sed -i 's/^HAVE_XKBCOMMON = 1/HAVE_XKBCOMMON = 0/' config.mk
 sed -i 's/^HAVE_GLSLANG_SPIRV_TOOLS = 1/HAVE_GLSLANG_SPIRV_TOOLS = 0/' config.mk
